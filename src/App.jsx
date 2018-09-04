@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import MessagesList from './MessageList.jsx'
+import Nav from './Nav.jsx';
+import MessagesList from './MessageList.jsx';
 
-
-const examples = {
+const initialState = {
   currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
   messages: [
     {
@@ -16,24 +16,17 @@ const examples = {
   ]
 }
 
-
-
-
-
-
 class App extends Component {
   constructor(props){
     super(props);
-
+    this.state = initialState;
     }
 
   render(){
     return (
     <div>
-      <nav className="navbar">
-        <a href="/" className="navbar-brand">Chatty</a>
-      </nav>
-      <MessagesList />
+      <Nav />
+      <MessagesList messages={this.state.messages} />
       <footer className="chatbar">
         <input className="chatbar-username" placeholder="Your Name (Optional)" />
         <input className="chatbar-message" placeholder="Type a message and hit ENTER" />
