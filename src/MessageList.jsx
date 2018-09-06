@@ -1,10 +1,10 @@
 import React from 'react';
 import Message from './Message.jsx'
-import MessagesSystem from './MessageSystem.jsx'
+
 
 
 const MessagesList = props => (
-  <main className='messages'>
+  <div className='messages'>
     { props.messages.map( (message,i) =>
       <Message
         key={i}
@@ -12,8 +12,8 @@ const MessagesList = props => (
         content={message.content} />
     )}
 
-    <MessageSystem />
-  </main>
+
+  </div>
 )
 
 export default MessagesList;
