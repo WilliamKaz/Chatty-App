@@ -5,22 +5,6 @@ import MessageSystem from './MessageSystem.jsx'
 import Footer from './Footer.jsx'
 const uuidv1 = require('uuid/v1');
 
-
-
-// const initialState = {
-//   currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-//   messages: [
-//     {
-//       username: "Bob",
-//       content: "Has anyone seen my marbles?",
-//     },
-//     {
-//       username: "Anonymous",
-//       content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-//     }
-//   ]
-// }
-
 class App extends Component {
 
   constructor(props){
@@ -56,7 +40,6 @@ class App extends Component {
     this.socket.send(JSON.stringify(msg));
   }
 
-
   receiveInput(event) {
     this.setState({inputBox: event.target.value})
   }
@@ -70,7 +53,6 @@ class App extends Component {
       inputBox: ""
     })
   }
-
 
   render(){
     return (
@@ -87,4 +69,3 @@ class App extends Component {
 }
 
 export default App;
-
