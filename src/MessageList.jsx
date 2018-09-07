@@ -1,18 +1,23 @@
 import React from 'react';
-import Message from './Message.jsx'
+import Message from './Message.jsx';
+import MessageSystem from './MessageSystem.jsx';
 
 
 
 const MessagesList = props => (
   <div className='messages'>
     { props.messages.map( (message,i) =>
-      <Message
-        key={i}
-        username={message.username}
-        content={message.content} />
+      (message.type === 'postMessage') ?(
+        <Message
+          key={i}
+          username={message.username}
+          content={message.content} />
+        ): (
+        <MessageSystem
+          key={i}
+          content={message.content} />
+          )
     )}
-
-
   </div>
 )
 

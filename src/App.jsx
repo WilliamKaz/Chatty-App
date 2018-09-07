@@ -10,12 +10,15 @@ class App extends Component {
   constructor(props){
     super(props);
      this.state = {
-      currentUser: {name: "Bob"},
+      currentUser:  "Anonimous1",
       messages: [],
       inputBox: '',
-      user: '',
+      userBox: '',
+      userCount: 0
     };
     this.receiveInput = this.receiveInput.bind(this);
+    this.receiveUserName = this.receiveUserName.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -26,10 +29,22 @@ class App extends Component {
     //   this.socket.send("Here's some text that the server is urgently awaiting!");
     // }
     this.socket.onmessage = (event) => {
-      let returnMessage = JSON.parse(event.data);
-      this.setState({
-        messages: [...this.state.messages, returnMessage]
-      })
+
+      let dat =  JSON.parse(event.data);
+      console.log(dat);
+      if (dat.type == 'notificationMessage'|| dat.type == 'postMessage'){
+        let returnMessage = dat;
+        this.setState({
+          messages: [...this.state.messages, returnMessage]
+        })
+      } else if( dat.type == 'count'){
+        this.setState({
+          userCount: dat.online
+        })
+      }
+      else {
+        alert('nope');
+      }
     }
   }
 
@@ -44,10 +59,45 @@ class App extends Component {
     this.setState({inputBox: event.target.value})
   }
 
+   receiveUserName(event) {
+    this.setState({userBox: event.target.value})
+  }
+
+  handleNameChange(event){
+    if(event.target.value != ''){
+
+    let newMessage = {
+      type: 'notificationMessage',
+      id: uuidv1(),
+      content:`${this.state.currentUser} has changed their name to ${event.target.value}`
+    };
+
+    this.sendText(newMessage);
+      this.setState({
+        currentUser : event.target.value
+      })
+
+    } else if (this.state.currentUser == 'Anonymous') {
+    } else {
+
+      this.setState({
+        currentUser : 'Anonymous'
+      })
+
+      let newMessage = {
+        type: 'notificationMessage',
+        id: uuidv1(),
+        content:`${this.state.currentUser} is now Anonymous`
+      };
+      this.sendText(newMessage);
+
+    }
+  }
+
+
   handleSubmit(event) {
     event.preventDefault()
-    let newMessage = {id: uuidv1(), username: this.state.currentUser.name, content: this.state.inputBox };
-
+    let newMessage = {type: 'postMessage',  id: uuidv1(), username: this.state.currentUser, content: this.state.inputBox, };
     this.sendText(newMessage);
     this.setState({
       inputBox: ""
@@ -58,11 +108,10 @@ class App extends Component {
     return (
     <div>
       <main>
-        <Nav />
-        <MessagesList messages={this.state.messages} />
-        <MessageSystem />
+        <Nav count={this.state.userCount}/>
+        <MessagesList  messages={this.state.messages} />
       </main>
-      <Footer currentUser={this.state.currentUser.name} inputBox={this.state.inputBox} textIn={this.receiveInput} handleSubmit={this.handleSubmit} />
+      <Footer currentUser={this.state.currentUser.name} inputBox={this.state.inputBox} textIn={this.receiveInput} textInUser={this.receiveUserName} handleNameChange={this.handleNameChange} handleSubmit={this.handleSubmit} />
     </div>
     );
   }
