@@ -27,7 +27,7 @@ body {
 }
 
 .chatbar-message, .chatbar-username {
-  border: 1px solid black;
+
   display: block;
   height: 40px;
   line-height: 40px;
@@ -36,6 +36,7 @@ body {
 }
 
 .chatbar-message {
+  padding:none;
   flex: 8;
 }
 
@@ -90,4 +91,8 @@ body {
 }
 
 .a{float:left}
-.b{float:right}
+.b{
+  margin: 0;
+  width: 100%;
+  padding: 10px 25px;
+}

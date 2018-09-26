@@ -39,7 +39,7 @@ class App extends Component {
         })
       } else if( dat.type == 'count'){
         this.setState({
-          userCount: dat.online
+          userCount: dat.users
         })
       }
       else {
@@ -64,20 +64,22 @@ class App extends Component {
   }
 
   handleNameChange(event){
-    if(event.target.value != ''){
+    event.preventDefault();
+    if(this.state.userBox != ''){
 
     let newMessage = {
       type: 'notificationMessage',
       id: uuidv1(),
-      content:`${this.state.currentUser} has changed their name to ${event.target.value}`
+      content:`${this.state.currentUser} has changed their name to ${this.state.userBox}`
     };
 
     this.sendText(newMessage);
       this.setState({
-        currentUser : event.target.value
+        currentUser : this.state.userBox
       })
 
     } else if (this.state.currentUser == 'Anonymous') {
+
     } else {
 
       this.setState({

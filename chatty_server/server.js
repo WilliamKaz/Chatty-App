@@ -15,15 +15,13 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
-let users = {type: 'count', online: 0 };
-
+// var online = function
 
 
 wss.on('connection', (ws) => {
-  console.log('Client connected')
-  users.online += 1;
+  console.log('Client connected');
   wss.clients.forEach(function each(client) {
-      client.send(JSON.stringify(users));
+      client.send(JSON.stringify( {type: 'count', users: wss.clients.size}));
   });
 
 
@@ -36,9 +34,12 @@ wss.on('connection', (ws) => {
   })
 
    ws.on('close', () => {
-    console.log('Client disconnected')
-    client.send(JSON.stringify(users));
-    users.online -=1;
+    console.log('Client disconnected');
+     wss.clients.forEach(function each(client) {
+      client.send(JSON.stringify( {type: 'count', users: wss.clients.size}));
+    });
+
+
 
   });
 })
